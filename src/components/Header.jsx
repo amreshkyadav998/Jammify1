@@ -3,6 +3,13 @@ import { AuthContext } from '../contexts/AuthContext';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { Link } from 'react-router-dom';
 import { Music, Sun, Moon, LogOut, User, Crown, Shield } from 'lucide-react';
+// import Music from 'lucide-react/icons/music';
+// import Sun from 'lucide-react/icons/sun';
+// import Moon from 'lucide-react/icons/moon';
+// import LogOut from 'lucide-react/icons/log-out';
+// import User from 'lucide-react/icons/user';
+// import Crown from 'lucide-react/icons/crown';
+// import Shield from 'lucide-react/icons/shield';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
