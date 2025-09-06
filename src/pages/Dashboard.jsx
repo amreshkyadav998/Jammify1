@@ -31,12 +31,11 @@ const Dashboard = () => {
     import("music_library/MusicLibrary")
   );
 
+  console.log("Songs in Dashboard:", songs); // Debug log
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-500 p-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-black dark:text-black mb-6">
-          🎵 Music Library Dashboard
-        </h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-500 p-0">
+      <div className="max-w-6xl mx-auto">
         <Suspense
           fallback={<div className="text-gray-600 dark:text-gray-400">Loading Music Library...</div>}
         >

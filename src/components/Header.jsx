@@ -1,19 +1,10 @@
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { ThemeContext } from '../contexts/ThemeContext';
 import { Link } from 'react-router-dom';
-import { Music, Sun, Moon, LogOut, User, Crown, Shield } from 'lucide-react';
-// import Music from 'lucide-react/icons/music';
-// import Sun from 'lucide-react/icons/sun';
-// import Moon from 'lucide-react/icons/moon';
-// import LogOut from 'lucide-react/icons/log-out';
-// import User from 'lucide-react/icons/user';
-// import Crown from 'lucide-react/icons/crown';
-// import Shield from 'lucide-react/icons/shield';
+import { Music,LogOut, User, Crown, Shield } from 'lucide-react';
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
-  const { theme, toggleTheme } = useContext(ThemeContext);
 
   const getRoleIcon = (role) => {
     switch (role?.toLowerCase()) {
@@ -43,8 +34,8 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <Link to="/dashboard" className="flex items-center space-x-2">
-            <Music className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-xl font-semibold text-gray-900 dark:text-white">
+            <Music className="w-8 h-8 text-blue-300" />
+            <span className="text-2xl font-semibold text-blue-500">
               JammiFy
             </span>
           </Link>
@@ -67,19 +58,6 @@ const Header = () => {
                 </span>
               </div>
             )}
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-            >
-              {theme === 'light' ? (
-                <Moon className="w-5 h-5 text-gray-600" />
-              ) : (
-                <Sun className="w-5 h-5 text-yellow-500" />
-              )}
-            </button>
 
             {/* Auth Actions */}
             {user ? (
