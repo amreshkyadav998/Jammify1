@@ -32,9 +32,9 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-500 p-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+        <h1 className="text-3xl font-bold text-black dark:text-black mb-6">
           🎵 Music Library Dashboard
         </h1>
         <Suspense
