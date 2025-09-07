@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -6,13 +6,23 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
-  const { login } = useContext(AuthContext);
+  const { user, login, error, clearError } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard"); // Redirect to dashboard if user is already logged in
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    clearError();
     login(username, password, role);
-    navigate("/dashboard");
+    // Only navigate if login is successful (no error and user is set)
+    if (!error && user) {
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -21,8 +31,7 @@ const Login = () => {
       <div
         className="hidden md:flex md:w-1/2 bg-cover bg-center"
         style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80')",
+          backgroundImage: "url('/leftimage.avif')",
         }}
       ></div>
 
@@ -41,8 +50,13 @@ const Login = () => {
               type="text"
               placeholder="Enter your username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              onChange={(e) => {
+                setUsername(e.target.value);
+                clearError();
+              }}
+              className={`w-full p-3 border focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
+                error && role === "admin" ? "border-red-500" : "border-gray-300"
+              }`}
               required
             />
           </div>
@@ -55,8 +69,13 @@ const Login = () => {
               type="password"
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                clearError();
+              }}
+              className={`w-full p-3 border focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
+                error && role === "admin" ? "border-red-500" : "border-gray-300"
+              }`}
               required
             />
           </div>
@@ -65,13 +84,18 @@ const Login = () => {
             <label className="block text-gray-600 mb-2 font-medium">Role</label>
             <select
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={(e) => {
+                setRole(e.target.value);
+                clearError();
+              }}
               className="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             >
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
           </div>
+
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
           <button
             type="submit"

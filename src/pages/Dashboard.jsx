@@ -31,7 +31,7 @@ const Dashboard = () => {
     import("music_library/MusicLibrary")
   );
 
-  console.log("Songs in Dashboard:", songs); // Debug log
+  console.log("Songs in Dashboard:", songs);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-500 p-0">

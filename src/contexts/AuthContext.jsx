@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode"; // ✅ named import for v4.x
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 
@@ -10,6 +10,11 @@ export const AuthProvider = ({ children }) => {
     const body = btoa(JSON.stringify(payload));
     const signature = "fake-signature"; // not real cryptography
     return `${header}.${body}.${signature}`;
+  };
+
+  // Predefined credentials for admin only
+  const validCredentials = {
+    admin: { username: "amresh yadav", password: "123456", role: "admin" },
   };
 
   const [user, setUser] = useState(() => {
@@ -29,20 +34,53 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
 
+  const [error, setError] = useState(null);
+
   const login = (username, password, role) => {
-    const payload = {
-      username,
-      role,
-      exp: Math.floor(Date.now() / 1000) + 3600, // 1h expiry
-    };
-    const token = createFakeJWT(payload);
-    localStorage.setItem("token", token);
-    setUser(payload);
+    setError(null); // Clear previous errors
+    if (role === "admin") {
+      // Validate admin credentials
+      const credential = validCredentials.admin;
+      if (
+        credential &&
+        credential.username === username &&
+        credential.password === password &&
+        credential.role === role
+      ) {
+        const payload = {
+          username,
+          role,
+          exp: Math.floor(Date.now() / 1000) + 3600, // 1-hour expiry
+        };
+        const token = createFakeJWT(payload);
+        localStorage.setItem("token", token);
+        setUser(payload);
+      } else {
+        setError("Invalid admin username or password");
+      }
+    } else if (role === "user") {
+      // Accept any username and password for user role
+      const payload = {
+        username,
+        role,
+        exp: Math.floor(Date.now() / 1000) + 3600, // 1-hour expiry
+      };
+      const token = createFakeJWT(payload);
+      localStorage.setItem("token", token);
+      setUser(payload);
+    } else {
+      setError("Invalid role");
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    setError(null);
+  };
+
+  const clearError = () => {
+    setError(null);
   };
 
   useEffect(() => {
@@ -58,7 +96,7 @@ export const AuthProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, error, clearError }}>
       {children}
     </AuthContext.Provider>
   );
